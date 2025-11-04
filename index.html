@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription - BestCars</title>
+    <title>Administration Django</title>
     <style>
         :root {
-            --primary: #4361ee;
-            --primary-dark: #3a56d4;
-            --secondary: #7209b7;
-            --success: #4cc9f0;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --border: #dee2e6;
+            --django-dark: #0C4B33;
+            --django-green: #44B78B;
+            --django-light: #C9F0DD;
+            --gray-dark: #333;
+            --gray-medium: #666;
+            --gray-light: #f8f8f8;
+            --border-color: #ddd;
         }
         
         * {
@@ -23,372 +22,285 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
+            font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
+            background-color: var(--gray-light);
+            color: var(--gray-dark);
+            line-height: 1.5;
         }
         
-        .signup-container {
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .admin-header {
+            background-color: var(--django-dark);
+            color: white;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .admin-header h1 {
+            font-size: 24px;
+            font-weight: 300;
+        }
+        
+        /* Content Layout */
+        .admin-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+        
+        /* Main Content */
+        .admin-main {
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 450px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 20px;
+        }
+        
+        .admin-section {
+            margin-bottom: 30px;
+        }
+        
+        .admin-section h2 {
+            font-size: 20px;
+            color: var(--gray-dark);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .admin-section h3 {
+            font-size: 16px;
+            color: var(--django-dark);
+            margin: 15px 0 10px 0;
+        }
+        
+        /* Modules */
+        .module {
+            background: var(--gray-light);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-bottom: 10px;
             overflow: hidden;
         }
         
-        .signup-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-        }
-        
-        .signup-header h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        
-        .signup-header p {
-            opacity: 0.9;
-            font-size: 1rem;
-        }
-        
-        .signup-form {
-            padding: 2rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
+        .module-header {
+            background: var(--django-light);
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border-color);
             font-weight: 500;
-            color: var(--dark);
-            transition: all 0.3s ease;
         }
         
-        .form-input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background-color: white;
+        .module-list {
+            list-style: none;
         }
         
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        .module-item {
+            padding: 8px 15px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
-        /* Polymorphisme transparent - les champs changent d'apparence selon l'état */
-        .form-input:valid {
-            border-color: #28a745;
+        .module-item:last-child {
+            border-bottom: none;
         }
         
-        .form-input:invalid:not(:placeholder-shown) {
-            border-color: #dc3545;
-        }
-        
-        .form-input:placeholder-shown {
-            border-color: var(--border);
-        }
-        
-        /* Animation des labels */
-        .form-group:focus-within .form-label {
-            color: var(--primary);
-            transform: translateY(-2px);
-        }
-        
-        /* Indicateurs visuels pour la validation */
-        .form-group:after {
-            content: '';
-            position: absolute;
-            right: 1rem;
-            top: 2.5rem;
-            width: 20px;
-            height: 20px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .form-group.valid:after {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2328a745'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
-            opacity: 1;
-        }
-        
-        .form-group.invalid:after {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23dc3545'%3E%3Cpath d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/%3E%3C/svg%3E");
-            opacity: 1;
-        }
-        
-        .password-strength {
-            height: 4px;
-            background-color: var(--border);
-            border-radius: 2px;
-            margin-top: 0.5rem;
-            overflow: hidden;
-        }
-        
-        .password-strength-bar {
-            height: 100%;
-            width: 0;
-            transition: width 0.3s ease, background-color 0.3s ease;
-        }
-        
-        .password-weak .password-strength-bar {
-            width: 25%;
-            background-color: #dc3545;
-        }
-        
-        .password-medium .password-strength-bar {
-            width: 50%;
-            background-color: #ffc107;
-        }
-        
-        .password-strong .password-strength-bar {
-            width: 75%;
-            background-color: #28a745;
-        }
-        
-        .password-very-strong .password-strength-bar {
-            width: 100%;
-            background-color: #20c997;
-        }
-        
-        .register-btn {
-            width: 100%;
-            padding: 0.75rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 1rem;
-        }
-        
-        .register-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
-        }
-        
-        .register-btn:active {
-            transform: translateY(0);
-        }
-        
-        .login-link {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: var(--gray);
-        }
-        
-        .login-link a {
-            color: var(--primary);
+        .module-link {
+            color: var(--django-dark);
             text-decoration: none;
             font-weight: 500;
+            transition: color 0.2s;
         }
         
-        .login-link a:hover {
-            text-decoration: underline;
+        .module-link:hover {
+            color: var(--django-green);
         }
         
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .action-links {
+            display: flex;
+            gap: 10px;
         }
         
-        .form-group {
-            animation: fadeIn 0.5s ease forwards;
+        .action-link {
+            color: var(--gray-medium);
+            text-decoration: none;
+            font-size: 13px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            transition: all 0.2s;
         }
         
-        .form-group:nth-child(1) { animation-delay: 0.1s; }
-        .form-group:nth-child(2) { animation-delay: 0.2s; }
-        .form-group:nth-child(3) { animation-delay: 0.3s; }
-        .form-group:nth-child(4) { animation-delay: 0.4s; }
-        .form-group:nth-child(5) { animation-delay: 0.5s; }
+        .action-link:hover {
+            background-color: var(--django-green);
+            color: white;
+        }
+        
+        /* Recent Actions */
+        .recent-actions {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 20px;
+        }
+        
+        .recent-actions h2 {
+            font-size: 20px;
+            color: var(--gray-dark);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .action-section {
+            margin-bottom: 20px;
+        }
+        
+        .action-section h3 {
+            font-size: 16px;
+            color: var(--django-dark);
+            margin-bottom: 10px;
+        }
+        
+        .empty-message {
+            color: var(--gray-medium);
+            font-style: italic;
+            padding: 10px 0;
+        }
         
         /* Responsive */
-        @media (max-width: 480px) {
-            .signup-container {
-                max-width: 100%;
+        @media (max-width: 768px) {
+            .admin-content {
+                grid-template-columns: 1fr;
             }
-            
-            .signup-header, .signup-form {
-                padding: 1.5rem;
-            }
+        }
+        
+        /* Separator */
+        .separator {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <div class="signup-container">
-        <div class="signup-header">
-            <h1>Inscription</h1>
-            <p>Créez votre compte BestCars</p>
-        </div>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>Administration Django</h1>
+        </header>
         
-        <form class="signup-form" id="signupForm">
-            <div class="form-group">
-                <label class="form-label" for="username">Nom d'utilisateur</label>
-                <input type="text" id="username" class="form-input" placeholder="Entrez votre nom d'utilisateur" required>
-            </div>
+        <div class="admin-content">
+            <main class="admin-main">
+                <section class="admin-section">
+                    <h2>Administration du site</h2>
+                    
+                    <div class="module">
+                        <div class="module-header">
+                            AUTHENTIFICATION ET AUTORISATION
+                        </div>
+                        <ul class="module-list">
+                            <!-- Groups -->
+                            <li class="module-item">
+                                <a href="#" class="module-link">Groupes</a>
+                                <div class="action-links">
+                                    <a href="#" class="action-link">Ajouter</a>
+                                    <a href="#" class="action-link">Modifier</a>
+                                </div>
+                            </li>
+                            
+                            <!-- Users -->
+                            <li class="module-item">
+                                <a href="#" class="module-link">Utilisateurs</a>
+                                <div class="action-links">
+                                    <a href="#" class="action-link">Ajouter</a>
+                                    <a href="#" class="action-link">Modifier</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="module">
+                        <div class="module-header">
+                            DJANGOAPP
+                        </div>
+                        <ul class="module-list">
+                            <!-- Car makes -->
+                            <li class="module-item">
+                                <a href="#" class="module-link">Marques de voitures</a>
+                                <div class="action-links">
+                                    <a href="#" class="action-link">Ajouter</a>
+                                    <a href="#" class="action-link">Modifier</a>
+                                </div>
+                            </li>
+                            
+                            <!-- Car models -->
+                            <li class="module-item">
+                                <a href="#" class="module-link">Modèles de voitures</a>
+                                <div class="action-links">
+                                    <a href="#" class="action-link">Ajouter</a>
+                                    <a href="#" class="action-link">Modifier</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </main>
             
-            <div class="form-group">
-                <label class="form-label" for="firstName">Prénom</label>
-                <input type="text" id="firstName" class="form-input" placeholder="Entrez votre prénom" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label" for="lastName">Nom</label>
-                <input type="text" id="lastName" class="form-input" placeholder="Entrez votre nom" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label" for="email">Email</label>
-                <input type="email" id="email" class="form-input" placeholder="Entrez votre adresse email" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label" for="password">Mot de passe</label>
-                <input type="password" id="password" class="form-input" placeholder="Créez un mot de passe sécurisé" required minlength="6">
-                <div class="password-strength">
-                    <div class="password-strength-bar"></div>
+            <aside class="recent-actions">
+                <h2>Actions récentes</h2>
+                
+                <div class="action-section">
+                    <h3>Mes actions</h3>
+                    <div class="empty-message">Aucune action disponible</div>
                 </div>
-            </div>
-            
-            <button type="submit" class="register-btn">S'inscrire</button>
-            
-            <div class="login-link">
-                Déjà un compte ? <a href="#">Connectez-vous</a>
-            </div>
-        </form>
+            </aside>
+        </div>
     </div>
 
     <script>
-        // Gestion du polymorphisme des champs de formulaire
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('signupForm');
-            const inputs = form.querySelectorAll('.form-input');
-            const passwordInput = document.getElementById('password');
-            const passwordStrength = document.querySelector('.password-strength');
+            // Gestion des clics sur les liens principaux
+            const moduleLinks = document.querySelectorAll('.module-link');
+            moduleLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const moduleName = this.textContent;
+                    alert(`Navigation vers: ${moduleName}`);
+                    // Dans une vraie application, on redirigerait vers la page correspondante
+                });
+            });
             
-            // Validation en temps réel
-            inputs.forEach(input => {
-                const formGroup = input.parentElement;
-                
-                input.addEventListener('input', function() {
-                    // Validation basique
-                    if (input.value.trim() !== '') {
-                        if (input.checkValidity()) {
-                            formGroup.classList.remove('invalid');
-                            formGroup.classList.add('valid');
-                        } else {
-                            formGroup.classList.remove('valid');
-                            formGroup.classList.add('invalid');
-                        }
-                    } else {
-                        formGroup.classList.remove('valid', 'invalid');
-                    }
+            // Gestion des clics sur les liens d'action
+            const actionLinks = document.querySelectorAll('.action-link');
+            actionLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     
-                    // Forceur de validation pour l'email
-                    if (input.type === 'email' && input.value.trim() !== '') {
-                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                        if (!emailRegex.test(input.value)) {
-                            input.setCustomValidity('Veuillez entrer une adresse email valide');
-                        } else {
-                            input.setCustomValidity('');
-                        }
-                    }
-                });
-                
-                input.addEventListener('blur', function() {
-                    if (input.value.trim() !== '') {
-                        if (input.checkValidity()) {
-                            formGroup.classList.add('valid');
-                        } else {
-                            formGroup.classList.add('invalid');
-                        }
+                    const action = this.textContent;
+                    const moduleItem = this.closest('.module-item');
+                    const moduleName = moduleItem.querySelector('.module-link').textContent;
+                    
+                    if (action === 'Ajouter') {
+                        alert(`Ajout d'un nouvel élément dans: ${moduleName}`);
+                    } else if (action === 'Modifier') {
+                        alert(`Modification des éléments dans: ${moduleName}`);
                     }
                 });
             });
             
-            // Indicateur de force du mot de passe
-            passwordInput.addEventListener('input', function() {
-                const password = passwordInput.value;
-                const strengthBar = document.querySelector('.password-strength-bar');
-                const formGroup = passwordInput.parentElement;
-                
-                // Réinitialiser les classes
-                formGroup.classList.remove('password-weak', 'password-medium', 'password-strong', 'password-very-strong');
-                
-                if (password.length === 0) {
-                    strengthBar.style.width = '0';
-                    return;
-                }
-                
-                // Calcul simple de la force du mot de passe
-                let strength = 0;
-                
-                // Longueur
-                if (password.length >= 6) strength += 1;
-                if (password.length >= 8) strength += 1;
-                
-                // Complexité
-                if (/[a-z]/.test(password)) strength += 1;
-                if (/[A-Z]/.test(password)) strength += 1;
-                if (/[0-9]/.test(password)) strength += 1;
-                if (/[^a-zA-Z0-9]/.test(password)) strength += 1;
-                
-                // Appliquer les classes en fonction de la force
-                if (strength <= 2) {
-                    formGroup.classList.add('password-weak');
-                } else if (strength <= 4) {
-                    formGroup.classList.add('password-medium');
-                } else if (strength <= 6) {
-                    formGroup.classList.add('password-strong');
-                } else {
-                    formGroup.classList.add('password-very-strong');
-                }
-            });
-            
-            // Gestion de la soumission du formulaire
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Validation finale
-                let isValid = true;
-                inputs.forEach(input => {
-                    if (!input.checkValidity()) {
-                        isValid = false;
-                        input.parentElement.classList.add('invalid');
-                    }
-                });
-                
-                if (isValid) {
-                    // Simulation d'envoi du formulaire
-                    alert('Inscription réussie ! Redirection...');
-                    // Ici, vous ajouteriez normalement la logique d'envoi du formulaire
-                    // form.submit();
-                } else {
-                    alert('Veuillez corriger les erreurs dans le formulaire.');
-                }
-            });
+            // Simulation de chargement des actions récentes
+            setTimeout(() => {
+                // Dans une vraie application, on chargerait les données réelles ici
+                console.log("Chargement des actions récentes...");
+            }, 1000);
         });
     </script>
 </body>
