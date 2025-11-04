@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modèles de Voitures - Administration Django</title>
+    <title>Concessionnaires - BestCars</title>
     <style>
         :root {
-            --primary: #8B5FBF;
-            --primary-dark: #6B46C1;
-            --primary-light: #9F7AEA;
-            --accent: #D6BCFA;
+            --orange-primary: #FF6B35;
+            --orange-dark: #E55A2B;
+            --orange-light: #FF8C42;
+            --orange-accent: #FFA85C;
+            --orange-bg: #FFF3E8;
             --text-dark: #2D3748;
             --text-light: #718096;
             --border: #E2E8F0;
-            --bg-light: #F7FAFC;
             --white: #FFFFFF;
         }
         
@@ -24,443 +24,428 @@
         }
         
         body {
-            font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
-            background-color: var(--bg-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #FFF9F2 0%, var(--orange-bg) 100%);
             color: var(--text-dark);
-            line-height: 1.5;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
         }
         
-        .admin-container {
+        .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
         }
         
         /* Header */
-        .admin-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: var(--white);
-            padding: 15px 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem 0;
         }
         
-        .admin-header h1 {
-            font-size: 24px;
-            font-weight: 300;
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--orange-primary);
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
         
-        .breadcrumb {
-            font-size: 14px;
-            color: var(--accent);
-            margin-top: 5px;
+        .header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
         }
         
-        .breadcrumb a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-        
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Content Layout */
-        .admin-content {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 20px;
-        }
-        
-        /* Sidebar */
-        .admin-sidebar {
+        /* Table Container */
+        .table-container {
             background: var(--white);
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        /* Table */
+        .dealers-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+        
+        .dealers-table thead {
+            background: linear-gradient(135deg, var(--orange-primary) 0%, var(--orange-dark) 100%);
+            color: var(--white);
+        }
+        
+        .dealers-table th {
+            padding: 1rem 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .dealers-table th:first-child {
+            border-top-left-radius: 12px;
+        }
+        
+        .dealers-table th:last-child {
+            border-top-right-radius: 12px;
+        }
+        
+        .dealers-table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .dealers-table tbody tr:hover {
+            background-color: var(--orange-bg);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.15);
+        }
+        
+        .dealers-table tbody tr:last-child {
+            border-bottom: none;
+        }
+        
+        .dealers-table td {
+            padding: 1rem 0.75rem;
+            color: var(--text-dark);
+        }
+        
+        .dealers-table td:first-child {
+            font-weight: 600;
+            color: var(--orange-primary);
+        }
+        
+        /* Status Indicators */
+        .status-active {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(34, 197, 94, 0.1);
+            color: #16A34A;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-inactive {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(239, 68, 68, 0.1);
+            color: #DC2626;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        /* Controls */
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
         
         .search-box {
-            margin-bottom: 20px;
+            position: relative;
+            flex: 1;
+            max-width: 400px;
         }
         
         .search-input {
             width: 100%;
-            padding: 8px 12px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            font-size: 14px;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
         }
         
         .search-input:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(139, 95, 191, 0.1);
+            border-color: var(--orange-primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
         }
         
-        .module-section {
-            margin-bottom: 25px;
-        }
-        
-        .module-section h3 {
-            font-size: 14px;
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
             color: var(--text-light);
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            font-weight: 600;
         }
         
-        .module-list {
-            list-style: none;
-        }
-        
-        .module-item {
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .module-item:last-child {
-            border-bottom: none;
-        }
-        
-        .module-link {
-            color: var(--text-dark);
-            text-decoration: none;
+        .action-buttons {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 500;
+            gap: 0.75rem;
         }
         
-        .module-link:hover {
-            color: var(--primary);
-        }
-        
-        .add-btn {
-            background: var(--primary);
-            color: var(--white);
+        .btn {
+            padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: 3px;
-            padding: 2px 6px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        
-        .add-btn:hover {
-            background: var(--primary-dark);
-        }
-        
-        /* Main Content */
-        .admin-main {
-            background: var(--white);
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-        
-        .content-section {
-            margin-bottom: 30px;
-        }
-        
-        .content-section h2 {
-            font-size: 18px;
-            color: var(--text-dark);
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        /* Action Bar */
-        .action-bar {
-            background: var(--bg-light);
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 0.5rem;
         }
         
-        .action-select {
-            padding: 6px 12px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            background: var(--white);
-        }
-        
-        .go-btn {
-            background: var(--primary);
+        .btn-primary {
+            background: var(--orange-primary);
             color: var(--white);
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.2s;
         }
         
-        .go-btn:hover {
-            background: var(--primary-dark);
-        }
-        
-        .selection-info {
-            color: var(--text-light);
-            font-size: 14px;
-        }
-        
-        /* Model List */
-        .model-list {
-            list-style: none;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            overflow: hidden;
-        }
-        
-        .model-header {
-            background: var(--primary);
-            color: var(--white);
-            padding: 12px 15px;
-            font-weight: 600;
-        }
-        
-        .model-item {
-            padding: 12px 15px;
-            border-bottom: 1px solid var(--border);
-            transition: background 0.2s;
-        }
-        
-        .model-item:last-child {
-            border-bottom: none;
-        }
-        
-        .model-item:hover {
-            background: var(--bg-light);
-        }
-        
-        .model-link {
-            color: var(--text-dark);
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .model-link:hover {
-            color: var(--primary);
-        }
-        
-        /* Add Button */
-        .add-section {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-        }
-        
-        .add-model-btn {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: var(--white);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 6px rgba(139, 95, 191, 0.3);
-        }
-        
-        .add-model-btn:hover {
+        .btn-primary:hover {
+            background: var(--orange-dark);
             transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(139, 95, 191, 0.4);
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
         }
         
-        /* Separator */
-        .separator {
-            height: 1px;
-            background: var(--border);
-            margin: 20px 0;
+        .btn-secondary {
+            background: var(--white);
+            color: var(--orange-primary);
+            border: 2px solid var(--orange-primary);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--orange-bg);
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .page-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            background: var(--white);
+            color: var(--text-dark);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .page-btn:hover {
+            background: var(--orange-primary);
+            color: var(--white);
+            border-color: var(--orange-primary);
+        }
+        
+        .page-btn.active {
+            background: var(--orange-primary);
+            color: var(--white);
+            border-color: var(--orange-primary);
         }
         
         /* Responsive */
         @media (max-width: 768px) {
-            .admin-content {
-                grid-template-columns: 1fr;
+            .table-container {
+                overflow-x: auto;
             }
             
-            .admin-sidebar {
-                order: 2;
+            .dealers-table {
+                min-width: 800px;
             }
             
-            .admin-main {
-                order: 1;
+            .table-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                max-width: none;
             }
         }
     </style>
 </head>
 <body>
-    <div class="admin-container">
-        <header class="admin-header">
-            <h1>Administration Django</h1>
-            <div class="breadcrumb">
-                <a href="#">Home</a> &gt; <a href="#">Djangoapp</a> &gt; Car models
-            </div>
+    <div class="container">
+        <header class="header">
+            <h1>Concessionnaires</h1>
+            <p>Liste complète de nos concessionnaires partenaires</p>
         </header>
         
-        <div class="admin-content">
-            <aside class="admin-sidebar">
-                <div class="search-box">
-                    <input type="text" class="search-input" placeholder="Start typing to filter...">
-                </div>
-                
-                <div class="module-section">
-                    <h3>AUTHENTICATION AND AUTHORIZATION</h3>
-                    <ul class="module-list">
-                        <li class="module-item">
-                            <a href="#" class="module-link">
-                                Groups
-                                <button class="add-btn">+ Add</button>
-                            </a>
-                        </li>
-                        <li class="module-item">
-                            <a href="#" class="module-link">
-                                Users
-                                <button class="add-btn">+ Add</button>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="module-section">
-                    <h3>DJANGOAPP</h3>
-                    <ul class="module-list">
-                        <li class="module-item">
-                            <a href="#" class="module-link">
-                                Car makes
-                                <button class="add-btn">+ Add</button>
-                            </a>
-                        </li>
-                        <li class="module-item">
-                            <a href="#" class="module-link">
-                                Car models
-                                <button class="add-btn">+ Add</button>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </aside>
-            
-            <main class="admin-main">
-                <section class="content-section">
-                    <h2>Select car model to change</h2>
-                    
-                    <div class="action-bar">
-                        <select class="action-select">
-                            <option>______</option>
-                            <option>Delete selected</option>
-                            <option>Export selected</option>
-                        </select>
-                        <button class="go-btn">Go</button>
-                        <span class="selection-info">0 of 15 selected</span>
-                    </div>
-                    
-                    <div class="model-list">
-                        <div class="model-header">CAR MODEL</div>
-                        <div class="model-item">
-                            <a href="#" class="model-link">Kluger</a>
-                        </div>
-                        <div class="model-item">
-                            <a href="#" class="model-link">Camry</a>
-                        </div>
-                        <div class="model-item">
-                            <a href="#" class="model-link">Corolla</a>
-                        </div>
-                        <div class="model-item">
-                            <a href="#" class="model-link">Cerato</a>
-                        </div>
-                        <div class="model-item">
-                            <a href="#" class="model-link">Carnival</a>
-                        </div>
-                        <div class="model-item">
-                            <a href="#" class="model-link">Sorrento</a>
-                        </div>
-                        <div class="model-item">
-                            <a href="#" class="model-link">A6</a>
-                        </div>
-                        <div class="model-item">
-                            <a href="#" class="model-link">A5</a>
-                        </div>
-                        <div class="model-item">
-                            <a href="#" class="model-link">A4</a>
-                        </div>
-                        <div class="model-item">
-                            <a href="#" class="model-link">E-Class</a>
-                        </div>
-                        <div class="model-item">
-                            <a href="#" class="model-link">C-Class</a>
-                        </div>
-                        <div class="model-item">
-                            <a href="#" class="model-link">A-Class</a>
-                        </div>
-                    </div>
-                </section>
-                
-                <div class="add-section">
-                    <button class="add-model-btn">ADD CAR MODEL +</button>
-                </div>
-            </main>
+        <div class="table-controls">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Rechercher un concessionnaire...">
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-primary">
+                    <span>+</span>
+                    Nouveau Concessionnaire
+                </button>
+                <button class="btn btn-secondary">
+                    📊 Exporter
+                </button>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <table class="dealers-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom du Concessionnaire</th>
+                        <th>Ville</th>
+                        <th>Adresse</th>
+                        <th>Code Postal</th>
+                        <th>État</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Auto Premium Lyon</td>
+                        <td>Lyon</td>
+                        <td>45 Rue de la République</td>
+                        <td>69001</td>
+                        <td>Rhône</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Marseille Motors</td>
+                        <td>Marseille</td>
+                        <td>128 Avenue du Prado</td>
+                        <td>13006</td>
+                        <td>Bouches-du-Rhône</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Toulouse Auto Center</td>
+                        <td>Toulouse</td>
+                        <td>72 Allées Jean Jaurès</td>
+                        <td>31000</td>
+                        <td>Haute-Garonne</td>
+                        <td><span class="status-inactive">Inactif</span></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Nice Car Excellence</td>
+                        <td>Nice</td>
+                        <td>15 Promenade des Anglais</td>
+                        <td>06000</td>
+                        <td>Alpes-Maritimes</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Bordeaux Prestige Auto</td>
+                        <td>Bordeaux</td>
+                        <td>89 Cours de l'Intendance</td>
+                        <td>33000</td>
+                        <td>Gironde</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Lille Nord Motors</td>
+                        <td>Lille</td>
+                        <td>22 Place de la République</td>
+                        <td>59000</td>
+                        <td>Nord</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Strasbourg Auto Plus</td>
+                        <td>Strasbourg</td>
+                        <td>18 Rue des Francs-Bourgeois</td>
+                        <td>67000</td>
+                        <td>Bas-Rhin</td>
+                        <td><span class="status-inactive">Inactif</span></td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Nantes Atlantique Auto</td>
+                        <td>Nantes</td>
+                        <td>56 Quai de la Fosse</td>
+                        <td>44000</td>
+                        <td>Loire-Atlantique</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Montpellier Sud Motors</td>
+                        <td>Montpellier</td>
+                        <td>34 Place de la Comédie</td>
+                        <td>34000</td>
+                        <td>Hérault</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Rennes Bretagne Auto</td>
+                        <td>Rennes</td>
+                        <td>11 Rue Saint-Michel</td>
+                        <td>35000</td>
+                        <td>Ille-et-Vilaine</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="pagination">
+            <button class="page-btn">‹</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">›</button>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Gestion de la recherche
             const searchInput = document.querySelector('.search-input');
+            const tableRows = document.querySelectorAll('.dealers-table tbody tr');
+            
+            // Fonction de recherche
             searchInput.addEventListener('input', function() {
-                const filter = this.value.toLowerCase();
-                const moduleItems = document.querySelectorAll('.module-item');
+                const searchTerm = this.value.toLowerCase();
                 
-                moduleItems.forEach(item => {
-                    const text = item.textContent.toLowerCase();
-                    if (text.includes(filter)) {
-                        item.style.display = 'block';
+                tableRows.forEach(row => {
+                    const rowText = row.textContent.toLowerCase();
+                    if (rowText.includes(searchTerm)) {
+                        row.style.display = '';
                     } else {
-                        item.style.display = 'none';
+                        row.style.display = 'none';
                     }
                 });
             });
             
-            // Gestion des boutons d'ajout
-            const addButtons = document.querySelectorAll('.add-btn');
-            addButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const moduleName = this.closest('.module-link').firstChild.textContent.trim();
-                    alert(`Ajouter un nouvel élément dans: ${moduleName}`);
+            // Animation au survol des lignes
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                row.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
                 });
             });
             
-            // Gestion des liens de modèle
-            const modelLinks = document.querySelectorAll('.model-link');
-            modelLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const modelName = this.textContent;
-                    alert(`Modifier le modèle: ${modelName}`);
+            // Gestion des boutons de pagination
+            const pageButtons = document.querySelectorAll('.page-btn');
+            pageButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    pageButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
                 });
-            });
-            
-            // Gestion du bouton d'ajout principal
-            const addModelBtn = document.querySelector('.add-model-btn');
-            addModelBtn.addEventListener('click', function() {
-                alert('Ajouter un nouveau modèle de voiture');
-            });
-            
-            // Gestion du bouton Go
-            const goBtn = document.querySelector('.go-btn');
-            goBtn.addEventListener('click', function() {
-                const actionSelect = document.querySelector('.action-select');
-                alert(`Action: ${actionSelect.value}`);
             });
         });
     </script>

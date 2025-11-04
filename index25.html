@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modèles de Voitures - Administration Django</title>
+    <style>
+        :root {
+            --primary: #8B5FBF;
+            --primary-dark: #6B46C1;
+            --primary-light: #9F7AEA;
+            --accent: #D6BCFA;
+            --text-dark: #2D3748;
+            --text-light: #718096;
+            --border: #E2E8F0;
+            --bg-light: #F7FAFC;
+            --white: #FFFFFF;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+        
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .admin-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .admin-header h1 {
+            font-size: 24px;
+            font-weight: 300;
+        }
+        
+        .breadcrumb {
+            font-size: 14px;
+            color: var(--accent);
+            margin-top: 5px;
+        }
+        
+        .breadcrumb a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Content Layout */
+        .admin-content {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+        }
+        
+        /* Sidebar */
+        .admin-sidebar {
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        .search-box {
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 95, 191, 0.1);
+        }
+        
+        .module-section {
+            margin-bottom: 25px;
+        }
+        
+        .module-section h3 {
+            font-size: 14px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .module-list {
+            list-style: none;
+        }
+        
+        .module-item {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .module-item:last-child {
+            border-bottom: none;
+        }
+        
+        .module-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+        }
+        
+        .module-link:hover {
+            color: var(--primary);
+        }
+        
+        .add-btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .add-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Main Content */
+        .admin-main {
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        .content-section {
+            margin-bottom: 30px;
+        }
+        
+        .content-section h2 {
+            font-size: 18px;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        /* Action Bar */
+        .action-bar {
+            background: var(--bg-light);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .action-select {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: var(--white);
+        }
+        
+        .go-btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .go-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        .selection-info {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        /* Model List */
+        .model-list {
+            list-style: none;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .model-header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 12px 15px;
+            font-weight: 600;
+        }
+        
+        .model-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+        
+        .model-item:last-child {
+            border-bottom: none;
+        }
+        
+        .model-item:hover {
+            background: var(--bg-light);
+        }
+        
+        .model-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .model-link:hover {
+            color: var(--primary);
+        }
+        
+        /* Add Button */
+        .add-section {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .add-model-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(139, 95, 191, 0.3);
+        }
+        
+        .add-model-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(139, 95, 191, 0.4);
+        }
+        
+        /* Separator */
+        .separator {
+            height: 1px;
+            background: var(--border);
+            margin: 20px 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-sidebar {
+                order: 2;
+            }
+            
+            .admin-main {
+                order: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>Administration Django</h1>
+            <div class="breadcrumb">
+                <a href="#">Home</a> &gt; <a href="#">Djangoapp</a> &gt; Car models
+            </div>
+        </header>
+        
+        <div class="admin-content">
+            <aside class="admin-sidebar">
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="Start typing to filter...">
+                </div>
+                
+                <div class="module-section">
+                    <h3>AUTHENTICATION AND AUTHORIZATION</h3>
+                    <ul class="module-list">
+                        <li class="module-item">
+                            <a href="#" class="module-link">
+                                Groups
+                                <button class="add-btn">+ Add</button>
+                            </a>
+                        </li>
+                        <li class="module-item">
+                            <a href="#" class="module-link">
+                                Users
+                                <button class="add-btn">+ Add</button>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="module-section">
+                    <h3>DJANGOAPP</h3>
+                    <ul class="module-list">
+                        <li class="module-item">
+                            <a href="#" class="module-link">
+                                Car makes
+                                <button class="add-btn">+ Add</button>
+                            </a>
+                        </li>
+                        <li class="module-item">
+                            <a href="#" class="module-link">
+                                Car models
+                                <button class="add-btn">+ Add</button>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+            
+            <main class="admin-main">
+                <section class="content-section">
+                    <h2>Select car model to change</h2>
+                    
+                    <div class="action-bar">
+                        <select class="action-select">
+                            <option>______</option>
+                            <option>Delete selected</option>
+                            <option>Export selected</option>
+                        </select>
+                        <button class="go-btn">Go</button>
+                        <span class="selection-info">0 of 15 selected</span>
+                    </div>
+                    
+                    <div class="model-list">
+                        <div class="model-header">CAR MODEL</div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">Kluger</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">Camry</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">Corolla</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">Cerato</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">Carnival</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">Sorrento</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">A6</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">A5</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">A4</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">E-Class</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">C-Class</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">A-Class</a>
+                        </div>
+                    </div>
+                </section>
+                
+                <div class="add-section">
+                    <button class="add-model-btn">ADD CAR MODEL +</button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion de la recherche
+            const searchInput = document.querySelector('.search-input');
+            searchInput.addEventListener('input', function() {
+                const filter = this.value.toLowerCase();
+                const moduleItems = document.querySelectorAll('.module-item');
+                
+                moduleItems.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if (text.includes(filter)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Gestion des boutons d'ajout
+            const addButtons = document.querySelectorAll('.add-btn');
+            addButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const moduleName = this.closest('.module-link').firstChild.textContent.trim();
+                    alert(`Ajouter un nouvel élément dans: ${moduleName}`);
+                });
+            });
+            
+            // Gestion des liens de modèle
+            const modelLinks = document.querySelectorAll('.model-link');
+            modelLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const modelName = this.textContent;
+                    alert(`Modifier le modèle: ${modelName}`);
+                });
+            });
+            
+            // Gestion du bouton d'ajout principal
+            const addModelBtn = document.querySelector('.add-model-btn');
+            addModelBtn.addEventListener('click', function() {
+                alert('Ajouter un nouveau modèle de voiture');
+            });
+            
+            // Gestion du bouton Go
+            const goBtn = document.querySelector('.go-btn');
+            goBtn.addEventListener('click', function() {
+                const actionSelect = document.querySelector('.action-select');
+                alert(`Action: ${actionSelect.value}`);
+            });
+        });
+    </script>
+</body>
+</html>
