@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administration Django</title>
+    <title>Modèles de Voitures - Administration Django</title>
     <style>
         :root {
-            --django-dark: #0C4B33;
-            --django-green: #44B78B;
-            --django-light: #C9F0DD;
-            --gray-dark: #333;
-            --gray-medium: #666;
-            --gray-light: #f8f8f8;
-            --border-color: #ddd;
+            --primary: #8B5FBF;
+            --primary-dark: #6B46C1;
+            --primary-light: #9F7AEA;
+            --accent: #D6BCFA;
+            --text-dark: #2D3748;
+            --text-light: #718096;
+            --border: #E2E8F0;
+            --bg-light: #F7FAFC;
+            --white: #FFFFFF;
         }
         
         * {
@@ -23,8 +25,8 @@
         
         body {
             font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
-            background-color: var(--gray-light);
-            color: var(--gray-dark);
+            background-color: var(--bg-light);
+            color: var(--text-dark);
             line-height: 1.5;
         }
         
@@ -36,11 +38,12 @@
         
         /* Header */
         .admin-header {
-            background-color: var(--django-dark);
-            color: white;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
             padding: 15px 20px;
             margin-bottom: 20px;
-            border-radius: 4px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .admin-header h1 {
@@ -48,53 +51,64 @@
             font-weight: 300;
         }
         
+        .breadcrumb {
+            font-size: 14px;
+            color: var(--accent);
+            margin-top: 5px;
+        }
+        
+        .breadcrumb a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
         /* Content Layout */
         .admin-content {
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 250px 1fr;
             gap: 20px;
         }
         
-        /* Main Content */
-        .admin-main {
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
+        /* Sidebar */
+        .admin-sidebar {
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             padding: 20px;
         }
         
-        .admin-section {
-            margin-bottom: 30px;
+        .search-box {
+            margin-bottom: 20px;
         }
         
-        .admin-section h2 {
-            font-size: 20px;
-            color: var(--gray-dark);
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .admin-section h3 {
-            font-size: 16px;
-            color: var(--django-dark);
-            margin: 15px 0 10px 0;
-        }
-        
-        /* Modules */
-        .module {
-            background: var(--gray-light);
-            border: 1px solid var(--border-color);
+        .search-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
             border-radius: 4px;
-            margin-bottom: 10px;
-            overflow: hidden;
+            font-size: 14px;
         }
         
-        .module-header {
-            background: var(--django-light);
-            padding: 10px 15px;
-            border-bottom: 1px solid var(--border-color);
-            font-weight: 500;
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 95, 191, 0.1);
+        }
+        
+        .module-section {
+            margin-bottom: 25px;
+        }
+        
+        .module-section h3 {
+            font-size: 14px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 600;
         }
         
         .module-list {
@@ -102,11 +116,8 @@
         }
         
         .module-item {
-            padding: 8px 15px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
         }
         
         .module-item:last-child {
@@ -114,65 +125,160 @@
         }
         
         .module-link {
-            color: var(--django-dark);
+            color: var(--text-dark);
             text-decoration: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             font-weight: 500;
-            transition: color 0.2s;
         }
         
         .module-link:hover {
-            color: var(--django-green);
+            color: var(--primary);
         }
         
-        .action-links {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .action-link {
-            color: var(--gray-medium);
-            text-decoration: none;
-            font-size: 13px;
-            padding: 2px 6px;
+        .add-btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
             border-radius: 3px;
-            transition: all 0.2s;
+            padding: 2px 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
         }
         
-        .action-link:hover {
-            background-color: var(--django-green);
-            color: white;
+        .add-btn:hover {
+            background: var(--primary-dark);
         }
         
-        /* Recent Actions */
-        .recent-actions {
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
+        /* Main Content */
+        .admin-main {
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             padding: 20px;
         }
         
-        .recent-actions h2 {
-            font-size: 20px;
-            color: var(--gray-dark);
+        .content-section {
+            margin-bottom: 30px;
+        }
+        
+        .content-section h2 {
+            font-size: 18px;
+            color: var(--text-dark);
             margin-bottom: 15px;
             padding-bottom: 8px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border);
         }
         
-        .action-section {
+        /* Action Bar */
+        .action-bar {
+            background: var(--bg-light);
+            padding: 15px;
+            border-radius: 6px;
             margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
         
-        .action-section h3 {
+        .action-select {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: var(--white);
+        }
+        
+        .go-btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .go-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        .selection-info {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        /* Model List */
+        .model-list {
+            list-style: none;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .model-header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 12px 15px;
+            font-weight: 600;
+        }
+        
+        .model-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+        
+        .model-item:last-child {
+            border-bottom: none;
+        }
+        
+        .model-item:hover {
+            background: var(--bg-light);
+        }
+        
+        .model-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .model-link:hover {
+            color: var(--primary);
+        }
+        
+        /* Add Button */
+        .add-section {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .add-model-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
             font-size: 16px;
-            color: var(--django-dark);
-            margin-bottom: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(139, 95, 191, 0.3);
         }
         
-        .empty-message {
-            color: var(--gray-medium);
-            font-style: italic;
-            padding: 10px 0;
+        .add-model-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(139, 95, 191, 0.4);
+        }
+        
+        /* Separator */
+        .separator {
+            height: 1px;
+            background: var(--border);
+            margin: 20px 0;
         }
         
         /* Responsive */
@@ -180,13 +286,14 @@
             .admin-content {
                 grid-template-columns: 1fr;
             }
-        }
-        
-        /* Separator */
-        .separator {
-            height: 1px;
-            background-color: var(--border-color);
-            margin: 20px 0;
+            
+            .admin-sidebar {
+                order: 2;
+            }
+            
+            .admin-main {
+                order: 1;
+            }
         }
     </style>
 </head>
@@ -194,113 +301,167 @@
     <div class="admin-container">
         <header class="admin-header">
             <h1>Administration Django</h1>
+            <div class="breadcrumb">
+                <a href="#">Home</a> &gt; <a href="#">Djangoapp</a> &gt; Car models
+            </div>
         </header>
         
         <div class="admin-content">
-            <main class="admin-main">
-                <section class="admin-section">
-                    <h2>Administration du site</h2>
-                    
-                    <div class="module">
-                        <div class="module-header">
-                            AUTHENTIFICATION ET AUTORISATION
-                        </div>
-                        <ul class="module-list">
-                            <!-- Groups -->
-                            <li class="module-item">
-                                <a href="#" class="module-link">Groupes</a>
-                                <div class="action-links">
-                                    <a href="#" class="action-link">Ajouter</a>
-                                    <a href="#" class="action-link">Modifier</a>
-                                </div>
-                            </li>
-                            
-                            <!-- Users -->
-                            <li class="module-item">
-                                <a href="#" class="module-link">Utilisateurs</a>
-                                <div class="action-links">
-                                    <a href="#" class="action-link">Ajouter</a>
-                                    <a href="#" class="action-link">Modifier</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="module">
-                        <div class="module-header">
-                            DJANGOAPP
-                        </div>
-                        <ul class="module-list">
-                            <!-- Car makes -->
-                            <li class="module-item">
-                                <a href="#" class="module-link">Marques de voitures</a>
-                                <div class="action-links">
-                                    <a href="#" class="action-link">Ajouter</a>
-                                    <a href="#" class="action-link">Modifier</a>
-                                </div>
-                            </li>
-                            
-                            <!-- Car models -->
-                            <li class="module-item">
-                                <a href="#" class="module-link">Modèles de voitures</a>
-                                <div class="action-links">
-                                    <a href="#" class="action-link">Ajouter</a>
-                                    <a href="#" class="action-link">Modifier</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </section>
-            </main>
-            
-            <aside class="recent-actions">
-                <h2>Actions récentes</h2>
+            <aside class="admin-sidebar">
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="Start typing to filter...">
+                </div>
                 
-                <div class="action-section">
-                    <h3>Mes actions</h3>
-                    <div class="empty-message">Aucune action disponible</div>
+                <div class="module-section">
+                    <h3>AUTHENTICATION AND AUTHORIZATION</h3>
+                    <ul class="module-list">
+                        <li class="module-item">
+                            <a href="#" class="module-link">
+                                Groups
+                                <button class="add-btn">+ Add</button>
+                            </a>
+                        </li>
+                        <li class="module-item">
+                            <a href="#" class="module-link">
+                                Users
+                                <button class="add-btn">+ Add</button>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="module-section">
+                    <h3>DJANGOAPP</h3>
+                    <ul class="module-list">
+                        <li class="module-item">
+                            <a href="#" class="module-link">
+                                Car makes
+                                <button class="add-btn">+ Add</button>
+                            </a>
+                        </li>
+                        <li class="module-item">
+                            <a href="#" class="module-link">
+                                Car models
+                                <button class="add-btn">+ Add</button>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </aside>
+            
+            <main class="admin-main">
+                <section class="content-section">
+                    <h2>Select car model to change</h2>
+                    
+                    <div class="action-bar">
+                        <select class="action-select">
+                            <option>______</option>
+                            <option>Delete selected</option>
+                            <option>Export selected</option>
+                        </select>
+                        <button class="go-btn">Go</button>
+                        <span class="selection-info">0 of 15 selected</span>
+                    </div>
+                    
+                    <div class="model-list">
+                        <div class="model-header">CAR MODEL</div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">Kluger</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">Camry</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">Corolla</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">Cerato</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">Carnival</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">Sorrento</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">A6</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">A5</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">A4</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">E-Class</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">C-Class</a>
+                        </div>
+                        <div class="model-item">
+                            <a href="#" class="model-link">A-Class</a>
+                        </div>
+                    </div>
+                </section>
+                
+                <div class="add-section">
+                    <button class="add-model-btn">ADD CAR MODEL +</button>
+                </div>
+            </main>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Gestion des clics sur les liens principaux
-            const moduleLinks = document.querySelectorAll('.module-link');
-            moduleLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const moduleName = this.textContent;
-                    alert(`Navigation vers: ${moduleName}`);
-                    // Dans une vraie application, on redirigerait vers la page correspondante
-                });
-            });
-            
-            // Gestion des clics sur les liens d'action
-            const actionLinks = document.querySelectorAll('.action-link');
-            actionLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const action = this.textContent;
-                    const moduleItem = this.closest('.module-item');
-                    const moduleName = moduleItem.querySelector('.module-link').textContent;
-                    
-                    if (action === 'Ajouter') {
-                        alert(`Ajout d'un nouvel élément dans: ${moduleName}`);
-                    } else if (action === 'Modifier') {
-                        alert(`Modification des éléments dans: ${moduleName}`);
+            // Gestion de la recherche
+            const searchInput = document.querySelector('.search-input');
+            searchInput.addEventListener('input', function() {
+                const filter = this.value.toLowerCase();
+                const moduleItems = document.querySelectorAll('.module-item');
+                
+                moduleItems.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if (text.includes(filter)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
                     }
                 });
             });
             
-            // Simulation de chargement des actions récentes
-            setTimeout(() => {
-                // Dans une vraie application, on chargerait les données réelles ici
-                console.log("Chargement des actions récentes...");
-            }, 1000);
+            // Gestion des boutons d'ajout
+            const addButtons = document.querySelectorAll('.add-btn');
+            addButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const moduleName = this.closest('.module-link').firstChild.textContent.trim();
+                    alert(`Ajouter un nouvel élément dans: ${moduleName}`);
+                });
+            });
+            
+            // Gestion des liens de modèle
+            const modelLinks = document.querySelectorAll('.model-link');
+            modelLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const modelName = this.textContent;
+                    alert(`Modifier le modèle: ${modelName}`);
+                });
+            });
+            
+            // Gestion du bouton d'ajout principal
+            const addModelBtn = document.querySelector('.add-model-btn');
+            addModelBtn.addEventListener('click', function() {
+                alert('Ajouter un nouveau modèle de voiture');
+            });
+            
+            // Gestion du bouton Go
+            const goBtn = document.querySelector('.go-btn');
+            goBtn.addEventListener('click', function() {
+                const actionSelect = document.querySelector('.action-select');
+                alert(`Action: ${actionSelect.value}`);
+            });
         });
     </script>
 </body>
