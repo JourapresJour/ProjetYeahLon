@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dealerships - BestCars</title>
+    <title>BestCars - Concessionnaire</title>
     <style>
         :root {
-            --green: #28a745;
-            --green-dark: #218838;
-            --green-light: #d4edda;
+            --orange: #FF6B00;
+            --orange-dark: #E55A00;
+            --orange-light: #FFE8D9;
             --gray-light: #f5f5f5;
             --gray: #333;
             --gray-medium: #666;
@@ -47,7 +47,7 @@
         .logo {
             font-size: 1.8rem;
             font-weight: bold;
-            color: var(--green);
+            color: var(--orange);
         }
         
         nav ul {
@@ -67,7 +67,7 @@
         }
         
         nav a:hover {
-            color: var(--green);
+            color: var(--orange);
         }
         
         .user-section {
@@ -82,7 +82,7 @@
         }
         
         .logout-btn {
-            background-color: var(--green);
+            background-color: var(--orange);
             color: white;
             border: none;
             padding: 0.6rem 1.2rem;
@@ -96,7 +96,7 @@
         }
         
         .logout-btn:hover {
-            background-color: var(--green-dark);
+            background-color: var(--orange-dark);
         }
         
         .container {
@@ -133,7 +133,7 @@
         }
         
         .card h3 {
-            color: var(--green);
+            color: var(--orange);
             margin-bottom: 1rem;
             font-size: 1.3rem;
         }
@@ -145,7 +145,7 @@
         
         .card-link {
             display: inline-block;
-            color: var(--green);
+            color: var(--orange);
             text-decoration: none;
             font-weight: 500;
             margin-top: 0.5rem;
@@ -156,7 +156,7 @@
         }
         
         .hero {
-            background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+            background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
             color: white;
             padding: 4rem 2rem;
             text-align: center;
@@ -173,61 +173,6 @@
             font-size: 1.2rem;
             max-width: 700px;
             margin: 0 auto;
-        }
-        
-        .logout-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal-content {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            max-width: 400px;
-            width: 90%;
-            text-align: center;
-        }
-        
-        .modal-content h3 {
-            color: var(--green);
-            margin-bottom: 1rem;
-        }
-        
-        .modal-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-        
-        .confirm-btn {
-            background-color: var(--green);
-            color: white;
-            border: none;
-            padding: 0.6rem 1.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-        
-        .cancel-btn {
-            background-color: var(--gray-medium);
-            color: white;
-            border: none;
-            padding: 0.6rem 1.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
         }
         
         footer {
@@ -258,7 +203,7 @@
 <body>
     <header>
         <div class="header-container">
-            <div class="logo">Dealerships</div>
+            <div class="logo">BestCars</div>
             
             <nav>
                 <ul>
@@ -269,8 +214,8 @@
             </nav>
             
             <div class="user-section">
-                <span class="username">nikesh</span>
-                <button class="logout-btn" id="logoutButton">
+                <span class="username">akinbamigben</span>
+                <button class="logout-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
                         <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
@@ -310,48 +255,17 @@
         </div>
     </div>
     
-    <!-- Modal de déconnexion -->
-    <div class="logout-modal" id="logoutModal">
-        <div class="modal-content">
-            <h3>Déconnexion</h3>
-            <p>Logging out nikesh...</p>
-            <div class="modal-buttons">
-                <button class="confirm-btn" id="confirmLogout">OK</button>
-                <button class="cancel-btn" id="cancelLogout">Annuler</button>
-            </div>
-        </div>
-    </div>
-    
     <footer>
         <p>&copy; 2023 BestCars Dealerships - Tous droits réservés</p>
     </footer>
 
     <script>
         // Script pour la fonctionnalité de déconnexion
-        const logoutButton = document.getElementById('logoutButton');
-        const logoutModal = document.getElementById('logoutModal');
-        const confirmLogout = document.getElementById('confirmLogout');
-        const cancelLogout = document.getElementById('cancelLogout');
-        
-        logoutButton.addEventListener('click', function() {
-            logoutModal.style.display = 'flex';
-        });
-        
-        confirmLogout.addEventListener('click', function() {
-            alert('Déconnexion réussie. Redirection...');
-            logoutModal.style.display = 'none';
-            // Ici, vous ajouteriez normalement la logique de déconnexion réelle
-            // window.location.href = 'login.html';
-        });
-        
-        cancelLogout.addEventListener('click', function() {
-            logoutModal.style.display = 'none';
-        });
-        
-        // Fermer le modal en cliquant en dehors
-        window.addEventListener('click', function(event) {
-            if (event.target === logoutModal) {
-                logoutModal.style.display = 'none';
+        document.querySelector('.logout-btn').addEventListener('click', function() {
+            if(confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                alert('Déconnexion réussie. Redirection...');
+                // Ici, vous ajouteriez normalement la logique de déconnexion réelle
+                // window.location.href = 'login.html';
             }
         });
     </script>
