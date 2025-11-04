@@ -8,28 +8,50 @@
         :root {
             --orange: #FF6B00;
             --orange-dark: #E55A00;
+            --orange-light: #FFE8D9;
             --gray-light: #f5f5f5;
             --gray: #333;
+            --gray-medium: #666;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
             color: var(--gray);
             line-height: 1.6;
+            background-color: #f9f9f9;
         }
         
         header {
-            background-color: var(--orange);
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 1rem 2rem;
-            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--orange);
         }
         
         nav ul {
             list-style: none;
-            padding: 0;
-            margin: 0;
             display: flex;
         }
         
@@ -38,102 +60,214 @@
         }
         
         nav a {
-            color: white;
+            color: var(--gray);
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--orange);
+        }
+        
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .username {
+            font-weight: 500;
+            color: var(--gray-medium);
+        }
+        
+        .logout-btn {
+            background-color: var(--orange);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logout-btn:hover {
+            background-color: var(--orange-dark);
         }
         
         .container {
             max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
+            margin: 2rem auto;
+            padding: 0 2rem;
         }
         
-        h1 {
-            color: var(--orange);
-            border-bottom: 2px solid var(--orange);
-            padding-bottom: 0.5rem;
-        }
-        
-        .contact-section {
+        .page-title {
+            font-size: 2.5rem;
             margin-bottom: 2rem;
+            color: var(--gray);
+            text-align: center;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             padding: 1.5rem;
-            background-color: var(--gray-light);
-            border-radius: 5px;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         
-        .contact-section h2 {
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h3 {
             color: var(--orange);
-            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
         }
         
-        .contact-info {
-            font-size: 1.1rem;
+        .card p {
+            color: var(--gray-medium);
+            margin-bottom: 1rem;
         }
         
-        .contact-info a {
+        .card-link {
+            display: inline-block;
             color: var(--orange);
             text-decoration: none;
+            font-weight: 500;
+            margin-top: 0.5rem;
         }
         
-        .contact-info a:hover {
+        .card-link:hover {
             text-decoration: underline;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 3rem;
+        }
+        
+        .hero h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
         }
         
         footer {
             background-color: var(--gray);
             color: white;
             text-align: center;
-            padding: 1rem;
-            margin-top: 2rem;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+            
+            .user-section {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact Us</a></li>
-            </ul>
-        </nav>
+        <div class="header-container">
+            <div class="logo">BestCars</div>
+            
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </nav>
+            
+            <div class="user-section">
+                <span class="username">akinbamigben</span>
+                <button class="logout-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                    </svg>
+                    Logout
+                </button>
+            </div>
+        </div>
     </header>
     
     <div class="container">
-        <h1>Dealerships</h1>
+        <h1 class="page-title">Dealerships</h1>
         
-        <div class="contact-section">
-            <h2>Contact Customer Service</h2>
-            <div class="contact-info">
-                <a href="mailto:service.clients@meilleuresvoitures.com">service.clients@meilleuresvoitures.com</a>
-            </div>
+        <div class="hero">
+            <h2>Bienvenue sur votre espace BestCars</h2>
+            <p>Découvrez notre sélection exclusive de véhicules et nos services de concessionnaire.</p>
         </div>
         
-        <div class="contact-section">
-            <h2>Contact our National Advertising team</h2>
-            <div class="contact-info">
-                <a href="mailto:publicite.nationale@meilleuresvoitures.com">publicite.nationale@meilleuresvoitures.com</a>
+        <div class="content-grid">
+            <div class="card">
+                <h3>Nos Véhicules</h3>
+                <p>Parcourez notre large gamme de véhicules neufs et d'occasion, toutes marques confondues.</p>
+                <a href="#" class="card-link">Voir le catalogue →</a>
             </div>
-        </div>
-        
-        <div class="contact-section">
-            <h2>Contact our Public Relations team</h2>
-            <div class="contact-info">
-                <a href="mailto:relations.publiques@meilleuresvoitures.com">relations.publiques@meilleuresvoitures.com</a>
+            
+            <div class="card">
+                <h3>Services Après-Vente</h3>
+                <p>Entretien, réparation, pièces détachées : notre équipe technique est à votre service.</p>
+                <a href="#" class="card-link">Découvrir nos services →</a>
             </div>
-        </div>
-        
-        <div class="contact-section">
-            <h2>Contact the meilleuresvoitures.com offices</h2>
-            <div class="contact-info">
-                <strong>01 45 67 89 10</strong>
+            
+            <div class="card">
+                <h3>Financement</h3>
+                <p>Des solutions de financement adaptées à votre budget pour l'acquisition de votre véhicule.</p>
+                <a href="#" class="card-link">En savoir plus →</a>
             </div>
         </div>
     </div>
     
     <footer>
-        <p>&copy; 2023 MeilleuresVoitures.com - Tous droits réservés</p>
+        <p>&copy; 2023 BestCars Dealerships - Tous droits réservés</p>
     </footer>
+
+    <script>
+        // Script pour la fonctionnalité de déconnexion
+        document.querySelector('.logout-btn').addEventListener('click', function() {
+            if(confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                alert('Déconnexion réussie. Redirection...');
+                // Ici, vous ajouteriez normalement la logique de déconnexion réelle
+                // window.location.href = 'login.html';
+            }
+        });
+    </script>
 </body>
 </html>

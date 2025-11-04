@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BestCars - Concessionnaire</title>
+    <style>
+        :root {
+            --orange: #FF6B00;
+            --orange-dark: #E55A00;
+            --gray-light: #f5f5f5;
+            --gray: #333;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--orange);
+            padding: 1rem 2rem;
+            color: white;
+        }
+        
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        
+        nav li {
+            margin-right: 2rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1 {
+            color: var(--orange);
+            border-bottom: 2px solid var(--orange);
+            padding-bottom: 0.5rem;
+        }
+        
+        .contact-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: var(--gray-light);
+            border-radius: 5px;
+        }
+        
+        .contact-section h2 {
+            color: var(--orange);
+            margin-top: 0;
+        }
+        
+        .contact-info {
+            font-size: 1.1rem;
+        }
+        
+        .contact-info a {
+            color: var(--orange);
+            text-decoration: none;
+        }
+        
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+        
+        footer {
+            background-color: var(--gray);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1>Dealerships</h1>
+        
+        <div class="contact-section">
+            <h2>Contact Customer Service</h2>
+            <div class="contact-info">
+                <a href="mailto:service.clients@meilleuresvoitures.com">service.clients@meilleuresvoitures.com</a>
+            </div>
+        </div>
+        
+        <div class="contact-section">
+            <h2>Contact our National Advertising team</h2>
+            <div class="contact-info">
+                <a href="mailto:publicite.nationale@meilleuresvoitures.com">publicite.nationale@meilleuresvoitures.com</a>
+            </div>
+        </div>
+        
+        <div class="contact-section">
+            <h2>Contact our Public Relations team</h2>
+            <div class="contact-info">
+                <a href="mailto:relations.publiques@meilleuresvoitures.com">relations.publiques@meilleuresvoitures.com</a>
+            </div>
+        </div>
+        
+        <div class="contact-section">
+            <h2>Contact the meilleuresvoitures.com offices</h2>
+            <div class="contact-info">
+                <strong>01 45 67 89 10</strong>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 MeilleuresVoitures.com - Tous droits réservés</p>
+    </footer>
+</body>
+</html>
