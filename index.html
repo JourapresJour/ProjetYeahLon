@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dealerships - BestCars</title>
+    <title>Inscription - BestCars</title>
     <style>
         :root {
-            --green: #28a745;
-            --green-dark: #218838;
-            --green-light: #d4edda;
-            --gray-light: #f5f5f5;
-            --gray: #333;
-            --gray-medium: #666;
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --border: #dee2e6;
         }
         
         * {
@@ -21,338 +23,372 @@
         }
         
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            color: var(--gray);
-            line-height: 1.6;
-            background-color: #f9f9f9;
-        }
-        
-        header {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            padding: 1rem;
         }
         
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--green);
+        .signup-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
         }
         
-        nav ul {
-            list-style: none;
-            display: flex;
-        }
-        
-        nav li {
-            margin-right: 2rem;
-        }
-        
-        nav a {
-            color: var(--gray);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        nav a:hover {
-            color: var(--green);
-        }
-        
-        .user-section {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-        
-        .username {
-            font-weight: 500;
-            color: var(--gray-medium);
-        }
-        
-        .logout-btn {
-            background-color: var(--green);
+        .signup-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 4px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .logout-btn:hover {
-            background-color: var(--green-dark);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-        
-        .page-title {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: var(--gray);
+            padding: 2rem;
             text-align: center;
         }
         
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+        .signup-header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
         }
         
-        .card {
-            background-color: white;
+        .signup-header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+        
+        .signup-form {
+            padding: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+            transition: all 0.3s ease;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            padding: 1.5rem;
-            transition: transform 0.3s, box-shadow 0.3s;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
         }
         
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
         }
         
-        .card h3 {
-            color: var(--green);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
+        /* Polymorphisme transparent - les champs changent d'apparence selon l'état */
+        .form-input:valid {
+            border-color: #28a745;
         }
         
-        .card p {
-            color: var(--gray-medium);
-            margin-bottom: 1rem;
+        .form-input:invalid:not(:placeholder-shown) {
+            border-color: #dc3545;
         }
         
-        .card-link {
-            display: inline-block;
-            color: var(--green);
+        .form-input:placeholder-shown {
+            border-color: var(--border);
+        }
+        
+        /* Animation des labels */
+        .form-group:focus-within .form-label {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        /* Indicateurs visuels pour la validation */
+        .form-group:after {
+            content: '';
+            position: absolute;
+            right: 1rem;
+            top: 2.5rem;
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .form-group.valid:after {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2328a745'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+            opacity: 1;
+        }
+        
+        .form-group.invalid:after {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23dc3545'%3E%3Cpath d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/%3E%3C/svg%3E");
+            opacity: 1;
+        }
+        
+        .password-strength {
+            height: 4px;
+            background-color: var(--border);
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .password-weak .password-strength-bar {
+            width: 25%;
+            background-color: #dc3545;
+        }
+        
+        .password-medium .password-strength-bar {
+            width: 50%;
+            background-color: #ffc107;
+        }
+        
+        .password-strong .password-strength-bar {
+            width: 75%;
+            background-color: #28a745;
+        }
+        
+        .password-very-strong .password-strength-bar {
+            width: 100%;
+            background-color: #20c997;
+        }
+        
+        .register-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .register-btn:active {
+            transform: translateY(0);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--gray);
+        }
+        
+        .login-link a {
+            color: var(--primary);
             text-decoration: none;
             font-weight: 500;
-            margin-top: 0.5rem;
         }
         
-        .card-link:hover {
+        .login-link a:hover {
             text-decoration: underline;
         }
         
-        .hero {
-            background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
-            color: white;
-            padding: 4rem 2rem;
-            text-align: center;
-            border-radius: 10px;
-            margin-bottom: 3rem;
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .hero h2 {
-            font-size: 2.2rem;
-            margin-bottom: 1rem;
+        .form-group {
+            animation: fadeIn 0.5s ease forwards;
         }
         
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto;
-        }
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.3s; }
+        .form-group:nth-child(4) { animation-delay: 0.4s; }
+        .form-group:nth-child(5) { animation-delay: 0.5s; }
         
-        .logout-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal-content {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            max-width: 400px;
-            width: 90%;
-            text-align: center;
-        }
-        
-        .modal-content h3 {
-            color: var(--green);
-            margin-bottom: 1rem;
-        }
-        
-        .modal-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-        
-        .confirm-btn {
-            background-color: var(--green);
-            color: white;
-            border: none;
-            padding: 0.6rem 1.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-        
-        .cancel-btn {
-            background-color: var(--gray-medium);
-            color: white;
-            border: none;
-            padding: 0.6rem 1.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-        
-        footer {
-            background-color: var(--gray);
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 4rem;
-        }
-        
-        @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                gap: 1rem;
+        /* Responsive */
+        @media (max-width: 480px) {
+            .signup-container {
+                max-width: 100%;
             }
             
-            nav ul {
-                justify-content: center;
-            }
-            
-            .user-section {
-                width: 100%;
-                justify-content: center;
+            .signup-header, .signup-form {
+                padding: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="logo">Dealerships</div>
-            
-            <nav>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                </ul>
-            </nav>
-            
-            <div class="user-section">
-                <span class="username">nikesh</span>
-                <button class="logout-btn" id="logoutButton">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
-                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
-                    </svg>
-                    Logout
-                </button>
-            </div>
-        </div>
-    </header>
-    
-    <div class="container">
-        <h1 class="page-title">Dealerships</h1>
-        
-        <div class="hero">
-            <h2>Bienvenue sur votre espace BestCars</h2>
-            <p>Découvrez notre sélection exclusive de véhicules et nos services de concessionnaire.</p>
+    <div class="signup-container">
+        <div class="signup-header">
+            <h1>Inscription</h1>
+            <p>Créez votre compte BestCars</p>
         </div>
         
-        <div class="content-grid">
-            <div class="card">
-                <h3>Nos Véhicules</h3>
-                <p>Parcourez notre large gamme de véhicules neufs et d'occasion, toutes marques confondues.</p>
-                <a href="#" class="card-link">Voir le catalogue →</a>
+        <form class="signup-form" id="signupForm">
+            <div class="form-group">
+                <label class="form-label" for="username">Nom d'utilisateur</label>
+                <input type="text" id="username" class="form-input" placeholder="Entrez votre nom d'utilisateur" required>
             </div>
             
-            <div class="card">
-                <h3>Services Après-Vente</h3>
-                <p>Entretien, réparation, pièces détachées : notre équipe technique est à votre service.</p>
-                <a href="#" class="card-link">Découvrir nos services →</a>
+            <div class="form-group">
+                <label class="form-label" for="firstName">Prénom</label>
+                <input type="text" id="firstName" class="form-input" placeholder="Entrez votre prénom" required>
             </div>
             
-            <div class="card">
-                <h3>Financement</h3>
-                <p>Des solutions de financement adaptées à votre budget pour l'acquisition de votre véhicule.</p>
-                <a href="#" class="card-link">En savoir plus →</a>
+            <div class="form-group">
+                <label class="form-label" for="lastName">Nom</label>
+                <input type="text" id="lastName" class="form-input" placeholder="Entrez votre nom" required>
             </div>
-        </div>
-    </div>
-    
-    <!-- Modal de déconnexion -->
-    <div class="logout-modal" id="logoutModal">
-        <div class="modal-content">
-            <h3>Déconnexion</h3>
-            <p>Logging out nikesh...</p>
-            <div class="modal-buttons">
-                <button class="confirm-btn" id="confirmLogout">OK</button>
-                <button class="cancel-btn" id="cancelLogout">Annuler</button>
+            
+            <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input type="email" id="email" class="form-input" placeholder="Entrez votre adresse email" required>
             </div>
-        </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="password">Mot de passe</label>
+                <input type="password" id="password" class="form-input" placeholder="Créez un mot de passe sécurisé" required minlength="6">
+                <div class="password-strength">
+                    <div class="password-strength-bar"></div>
+                </div>
+            </div>
+            
+            <button type="submit" class="register-btn">S'inscrire</button>
+            
+            <div class="login-link">
+                Déjà un compte ? <a href="#">Connectez-vous</a>
+            </div>
+        </form>
     </div>
-    
-    <footer>
-        <p>&copy; 2023 BestCars Dealerships - Tous droits réservés</p>
-    </footer>
 
     <script>
-        // Script pour la fonctionnalité de déconnexion
-        const logoutButton = document.getElementById('logoutButton');
-        const logoutModal = document.getElementById('logoutModal');
-        const confirmLogout = document.getElementById('confirmLogout');
-        const cancelLogout = document.getElementById('cancelLogout');
-        
-        logoutButton.addEventListener('click', function() {
-            logoutModal.style.display = 'flex';
-        });
-        
-        confirmLogout.addEventListener('click', function() {
-            alert('Déconnexion réussie. Redirection...');
-            logoutModal.style.display = 'none';
-            // Ici, vous ajouteriez normalement la logique de déconnexion réelle
-            // window.location.href = 'login.html';
-        });
-        
-        cancelLogout.addEventListener('click', function() {
-            logoutModal.style.display = 'none';
-        });
-        
-        // Fermer le modal en cliquant en dehors
-        window.addEventListener('click', function(event) {
-            if (event.target === logoutModal) {
-                logoutModal.style.display = 'none';
-            }
+        // Gestion du polymorphisme des champs de formulaire
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('signupForm');
+            const inputs = form.querySelectorAll('.form-input');
+            const passwordInput = document.getElementById('password');
+            const passwordStrength = document.querySelector('.password-strength');
+            
+            // Validation en temps réel
+            inputs.forEach(input => {
+                const formGroup = input.parentElement;
+                
+                input.addEventListener('input', function() {
+                    // Validation basique
+                    if (input.value.trim() !== '') {
+                        if (input.checkValidity()) {
+                            formGroup.classList.remove('invalid');
+                            formGroup.classList.add('valid');
+                        } else {
+                            formGroup.classList.remove('valid');
+                            formGroup.classList.add('invalid');
+                        }
+                    } else {
+                        formGroup.classList.remove('valid', 'invalid');
+                    }
+                    
+                    // Forceur de validation pour l'email
+                    if (input.type === 'email' && input.value.trim() !== '') {
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailRegex.test(input.value)) {
+                            input.setCustomValidity('Veuillez entrer une adresse email valide');
+                        } else {
+                            input.setCustomValidity('');
+                        }
+                    }
+                });
+                
+                input.addEventListener('blur', function() {
+                    if (input.value.trim() !== '') {
+                        if (input.checkValidity()) {
+                            formGroup.classList.add('valid');
+                        } else {
+                            formGroup.classList.add('invalid');
+                        }
+                    }
+                });
+            });
+            
+            // Indicateur de force du mot de passe
+            passwordInput.addEventListener('input', function() {
+                const password = passwordInput.value;
+                const strengthBar = document.querySelector('.password-strength-bar');
+                const formGroup = passwordInput.parentElement;
+                
+                // Réinitialiser les classes
+                formGroup.classList.remove('password-weak', 'password-medium', 'password-strong', 'password-very-strong');
+                
+                if (password.length === 0) {
+                    strengthBar.style.width = '0';
+                    return;
+                }
+                
+                // Calcul simple de la force du mot de passe
+                let strength = 0;
+                
+                // Longueur
+                if (password.length >= 6) strength += 1;
+                if (password.length >= 8) strength += 1;
+                
+                // Complexité
+                if (/[a-z]/.test(password)) strength += 1;
+                if (/[A-Z]/.test(password)) strength += 1;
+                if (/[0-9]/.test(password)) strength += 1;
+                if (/[^a-zA-Z0-9]/.test(password)) strength += 1;
+                
+                // Appliquer les classes en fonction de la force
+                if (strength <= 2) {
+                    formGroup.classList.add('password-weak');
+                } else if (strength <= 4) {
+                    formGroup.classList.add('password-medium');
+                } else if (strength <= 6) {
+                    formGroup.classList.add('password-strong');
+                } else {
+                    formGroup.classList.add('password-very-strong');
+                }
+            });
+            
+            // Gestion de la soumission du formulaire
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validation finale
+                let isValid = true;
+                inputs.forEach(input => {
+                    if (!input.checkValidity()) {
+                        isValid = false;
+                        input.parentElement.classList.add('invalid');
+                    }
+                });
+                
+                if (isValid) {
+                    // Simulation d'envoi du formulaire
+                    alert('Inscription réussie ! Redirection...');
+                    // Ici, vous ajouteriez normalement la logique d'envoi du formulaire
+                    // form.submit();
+                } else {
+                    alert('Veuillez corriger les erreurs dans le formulaire.');
+                }
+            });
         });
     </script>
 </body>
